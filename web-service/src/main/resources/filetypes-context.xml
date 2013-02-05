@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="archFileType" class="com.example.fsexplorer.fs.FileType">
+        <constructor-arg name="className"  value="arch" />
+        <constructor-arg name="extensions">
+            <list>
+                <value>zip</value>
+                <value>rar</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="handlerUrl" value="/archive" />
+    </bean>
+
+    <bean id="docFileType" class="com.example.fsexplorer.fs.FileType">
+        <constructor-arg name="className" value="doc"/>
+        <constructor-arg name="extensions">
+            <list>
+                <value>doc</value>
+                <value>docx</value>
+                <value>xls</value>
+                <value>txt</value>
+                <value>sql</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="handlerUrl" value="/default" />
+    </bean>
+
+    <bean id="fileTypeFactory" class="com.example.fsexplorer.fs.FileTypeFactory">
+        <constructor-arg name="fileTypes">
+            <list>
+                <ref bean="docFileType" />
+                <ref bean="archFileType" />
+            </list>
+        </constructor-arg>
+    </bean>
+
+</beans>

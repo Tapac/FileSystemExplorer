@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="typeWithOneExtension" class="com.example.fsexplorer.fs.FileType">
+        <constructor-arg name="className" value="one" />
+        <constructor-arg name="extensions">
+            <list>
+                <value>one</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="handlerUrl" value="/" />
+    </bean>
+
+    <bean id="typeWithDifferentExtensions" class="com.example.fsexplorer.fs.FileType">
+        <constructor-arg name="className" value="multi" />
+        <constructor-arg name="extensions">
+            <list>
+                <value>two</value>
+                <value>three</value>
+                <value>four</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="handlerUrl" value="/" />
+    </bean>
+
+
+    <bean id="fileTypeFactory" class="com.example.fsexplorer.fs.FileTypeFactory">
+        <constructor-arg name="fileTypes">
+            <list>
+                <ref bean="typeWithOneExtension"/>
+                <ref bean="typeWithDifferentExtensions"/>
+            </list>
+        </constructor-arg>
+    </bean>
+</beans>

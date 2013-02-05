@@ -1,14 +1,14 @@
 package com.example.fsexplorer.api.rs;
 
 import com.example.fsexplorer.api.FileSystemRequestHandler;
-import com.example.fsexplorer.api.Node;
 import com.example.fsexplorer.api.NodeList;
+import com.example.fsexplorer.fs.FileSystemResolver;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import java.util.Arrays;
 
 /**
  * @author Andrey Tarashevsky
@@ -17,12 +17,18 @@ import java.util.Arrays;
 @Service("fsExplorerWS")
 public class FileSystemRequestHandlerEndpoint implements FileSystemRequestHandler {
 
+    private final FileSystemResolver fileSystemResolver;
+
+    public FileSystemRequestHandlerEndpoint(FileSystemResolver fileSystemResolver) {
+        this.fileSystemResolver = fileSystemResolver;
+    }
+
     @GET
-    @Path("/children")
+    @Path("/children/{path:.*}")
     @Produces("application/json")
     @Override
-    public NodeList getAllChildrenPaths(final String parentRoot) {
-        return new NodeList(Arrays.asList(new Node("path1"), new Node("path2")));
+    public NodeList getAllChildrenPaths(@PathParam("path") final String parentRoot) {
+        return fileSystemResolver.getAllChildren(parentRoot);
     }
 
 }

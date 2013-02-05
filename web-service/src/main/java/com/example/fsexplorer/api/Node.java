@@ -1,5 +1,7 @@
 package com.example.fsexplorer.api;
 
+import com.example.fsexplorer.fs.FileType;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -10,14 +12,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Node {
 
     public final String path;
-    public String type = "folder";
+    public final long size;
+    public final String className;
+    public final String handlerPath;
 
-    public Node(String path) {
+    private Node(String path, long size, String className, String handlerPath) {
         this.path = path;
+        this.size = size;
+        this.className = className;
+        this.handlerPath = handlerPath;
     }
 
-    public Node(String path, String type) {
-        this.path = path;
-        this.type = type;
+
+    public static Node createNode(String path, long size, FileType type) {
+        return new Node(path, size, type.getClassName(), type.getHandlerUrl());
     }
 }

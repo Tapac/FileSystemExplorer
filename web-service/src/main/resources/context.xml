@@ -13,17 +13,24 @@
 
     <import resource="classpath:META-INF/cxf/cxf.xml"/>
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
+    <import resource="filetypes-context.xml"/>
+
+    <bean id="fsResolver" class="com.example.fsexplorer.fs.FileSystemResolverImpl">
+        <constructor-arg name="rootPath" value="d:\" />
+        <constructor-arg name="fileTypeFactory" ref="fileTypeFactory" />
+    </bean>
 
     <jaxrs:server address="/rest/">
         <jaxrs:serviceBeans>
-            <bean class="com.example.fsexplorer.api.rs.FileSystemRequestHandlerEndpoint"/>
+            <bean id="fsRequestHandlerService" class="com.example.fsexplorer.api.rs.FileSystemRequestHandlerEndpoint">
+                <constructor-arg name="fileSystemResolver" ref="fsResolver" />
+            </bean>
         </jaxrs:serviceBeans>
         <jaxrs:providers>
-            <bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider"/>
+            <bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider" />
         </jaxrs:providers>
         <jaxrs:extensionMappings>
             <entry key="json" value="application/json"/>
         </jaxrs:extensionMappings>
     </jaxrs:server>
-
 </beans>
