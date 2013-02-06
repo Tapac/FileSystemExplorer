@@ -16,7 +16,12 @@ public class NodeList {
         this.nodes = nodes;
     }
 
-    public Collection<Node> getNodes() {
+
+    /**
+     * Accessor for mustache template
+     * @return list on nodes
+     */
+    public Collection<Node> nodes() {
         return nodes;
     }
 }

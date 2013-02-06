@@ -11,12 +11,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "node")
 public class Node {
 
+    public final String fileName;
     public final String path;
     public final long size;
     public final String className;
     public final String handlerPath;
 
-    private Node(String path, long size, String className, String handlerPath) {
+    private Node(String fileName, String path, long size, String className, String handlerPath) {
+        this.fileName = fileName;
         this.path = path;
         this.size = size;
         this.className = className;
@@ -24,7 +26,7 @@ public class Node {
     }
 
 
-    public static Node createNode(String path, long size, FileType type) {
-        return new Node(path, size, type.getClassName(), type.getHandlerUrl());
+    public static Node createNode(String fileName, String path, long size, FileType type) {
+        return new Node(fileName, path, size, type.getClassName(), type.getHandlerUrl());
     }
 }
