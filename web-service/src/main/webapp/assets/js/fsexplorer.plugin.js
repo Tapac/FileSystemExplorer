@@ -23,8 +23,10 @@
 
         _handleClick: function(node) {
             if($(node).next().hasClass("subnodes")) {
+                $(node).removeClass("opened");
                 $(node).next().hide().remove();
             } else {
+                $(node).addClass("opened");
                 this.loadNodes(node);
             }
         },

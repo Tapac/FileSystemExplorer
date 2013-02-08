@@ -3,7 +3,8 @@
     max-width: 500px;
     height: 100%;
     max-height: 500px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: visible;
     border: 1px solid;
 }
 
@@ -12,11 +13,34 @@ ul.filelist {
 }
 
 .fsexplorer li {
-    margin-left: 30px;
+    padding: 1px 0 1px 30px;
     list-style: none outside;
     border-bottom: 1px solid;
+    background: no-repeat left;
+    max-height: 20px;
+    background-size: contain;
 }
 
 li.doc {
-    background-image: ;
+    background-image: url('/assets/images/icon.doc.png');
+}
+
+li.folder {
+    background-image: url('/assets/images/icon.folder.closed.png');
+}
+
+li.folder.opened {
+    background-image: url('/assets/images/icon.folder.open.png');
+}
+
+li.jpg {
+    background-image: url('/assets/images/icon.jpg.png');
+}
+
+li.pdf {
+    background-image: url('/assets/images/icon.pdf.png');
+}
+
+li.xls {
+    background-image: url('/assets/images/icon.xls.png');
 }
