@@ -43,6 +43,7 @@
           <element id="library" level="project" name="Maven: cglib:cglib-nodep:2.2" />
           <element id="library" level="project" name="Maven: com.intellij:annotations:9.0.4" />
           <element id="library" level="project" name="Maven: com.github.spullara.mustache.java:compiler:0.8.8" />
+          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.7" />
         </element>
       </element>
     </root>

@@ -2,10 +2,12 @@ package com.example.fsexplorer.fs;
 
 import com.example.fsexplorer.api.Node;
 import com.example.fsexplorer.api.NodeList;
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,8 @@ public class FileSystemResolverImpl implements FileSystemResolver {
 
             for (Path entry : stream) {
                 String strippedPath = entry.toString().substring(rootPath.toString().length());
-                Node node = Node.createNode(entry.getFileName().toString(), strippedPath,
+                Node node = Node.createNode(entry.getFileName().toString(),
+                        Base64.encodeBase64URLSafeString(strippedPath.getBytes()),
                         Files.size(entry), fileTypeFactory.fromPath(entry));
                 nodes.add(node);
             }

@@ -9,7 +9,8 @@
 
             if (this.options.render == "server") {
                 var toAppend = (node.attr('fullpath') == "") ? node : node.after('<li class="subnodes"></li>').next();
-                toAppend.load(this.options.serviceUrl + renderService + "/children/" + $(node).attr('fullpath'));
+                var url = this.options.serviceUrl + renderService + "/children/" + $(node).attr('fullpath');
+                toAppend.load(encodeURI(url));
             }
         },
         _create: function () {

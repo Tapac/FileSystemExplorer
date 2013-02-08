@@ -4,15 +4,14 @@ import com.example.fsexplorer.api.FileSystemRequestHandler;
 import com.example.fsexplorer.api.NodeList;
 import com.example.fsexplorer.fs.FileSystemResolver;
 import com.example.fsexplorer.template.TemplateFactory;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * @author Andrey Tarashevsky
@@ -39,7 +38,12 @@ public class FileSystemRequestHandlerEndpoint implements FileSystemRequestHandle
     @Path("/rendered/children/{path:.*}")
     @Override
     public Response getAllChildrenRendered(@PathParam("path") final String parentRoot) {
-        NodeList nodeList = fileSystemResolver.getAllChildren(parentRoot);
+        if (!Base64.isBase64(parentRoot)) {
+            return Response.serverError().build();
+        }
+
+        String realPath = new String(Base64.decodeBase64(parentRoot.getBytes()));
+        NodeList nodeList = fileSystemResolver.getAllChildren(realPath);
         try {
             String html = TemplateFactory.prepareNodeListTemplate(nodeList);
             return Response.ok().type(MediaType.TEXT_HTML_TYPE).entity(html).build();
