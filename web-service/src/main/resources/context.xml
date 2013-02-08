@@ -20,7 +20,7 @@
         <constructor-arg name="fileTypeFactory" ref="fileTypeFactory" />
     </bean>
 
-    <jaxrs:server address="/rest/">
+    <jaxrs:server address="/">
         <jaxrs:serviceBeans>
             <bean id="fsRequestHandlerService" class="com.example.fsexplorer.api.rs.FileSystemRequestHandlerEndpoint">
                 <constructor-arg name="fileSystemResolver" ref="fsResolver" />

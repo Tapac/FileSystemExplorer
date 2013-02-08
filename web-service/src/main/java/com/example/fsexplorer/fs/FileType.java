@@ -12,7 +12,7 @@ import java.util.Objects;
  *         Date: 04.02.13
  */
 @XmlRootElement(name = "fileType")
-public class FileType {
+public final class FileType {
 
     private final String className;
     private final List<String> extensions;

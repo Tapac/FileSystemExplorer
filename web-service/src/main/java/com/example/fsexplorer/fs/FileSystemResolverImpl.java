@@ -39,7 +39,8 @@ public class FileSystemResolverImpl implements FileSystemResolver {
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
 
             for (Path entry : stream) {
-                Node node = Node.createNode(entry.getFileName().toString(), entry.toFile().getPath(),
+                String strippedPath = entry.toString().substring(rootPath.toString().length());
+                Node node = Node.createNode(entry.getFileName().toString(), strippedPath,
                         Files.size(entry), fileTypeFactory.fromPath(entry));
                 nodes.add(node);
             }

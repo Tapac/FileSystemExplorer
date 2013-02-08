@@ -31,7 +31,7 @@ public class FileTypeFactoryTest {
 
     @Before
     public void setUp() throws Exception {
-        rootTestPath = Paths.get("./web-service/src/test/resources/testFileSystem");
+        rootTestPath = Paths.get(FileTypeFactoryTest.class.getClassLoader().getResource("testFileSystem").toURI());
     }
 
     @Test
@@ -59,7 +59,7 @@ public class FileTypeFactoryTest {
     @Test
     public void testThatFromPathReturnsProperTypeForOneExtension() throws Exception {
 
-        Path oneFile = rootTestPath.resolve("file.one");
+        Path oneFile = rootTestPath.resolve("folder1").resolve("file.one");
         assertTrue(Files.exists(oneFile));
         FileType oneType = fileTypeFactory.fromPath(oneFile);
         assertEquals(oneType.getClassName(), "one");
@@ -69,8 +69,8 @@ public class FileTypeFactoryTest {
     @Test
     public void testThatFromPathReturnsSameTypeForDifferentExtensions() throws Exception {
 
-        Path twoFile = rootTestPath.resolve("file.two");
-        Path threeFile = rootTestPath.resolve("file.three");
+        Path twoFile = rootTestPath.resolve("folder2").resolve("file.two");
+        Path threeFile = rootTestPath.resolve("folder2").resolve("file.three");
 
         assertTrue(Files.exists(twoFile));
         assertTrue(Files.exists(threeFile));

@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="archFileType" class="com.example.fsexplorer.fs.FileType">
-        <constructor-arg name="className"  value="arch" />
+        <constructor-arg name="className"  value="arc" />
         <constructor-arg name="extensions">
             <list>
                 <value>zip</value>
