@@ -28,11 +28,70 @@
         <constructor-arg name="handlerUrl" value="/default" />
     </bean>
 
+    <bean id="htmlFileType" class="com.example.fsexplorer.fs.FileType">
+        <constructor-arg name="className" value="html"/>
+        <constructor-arg name="extensions">
+            <list>
+                <value>html</value>
+                <value>htm</value>
+                <value>xhtml</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="handlerUrl" value="/default" />
+    </bean>
+
+    <bean id="xmlFileType" class="com.example.fsexplorer.fs.FileType">
+        <constructor-arg name="className" value="xml"/>
+        <constructor-arg name="extensions">
+            <list>
+                <value>xml</value>
+                <value>xsl</value>
+                <value>xsd</value>
+                <value>dtd</value>
+                <value>ent</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="handlerUrl" value="/default" />
+    </bean>
+
+    <bean id="musicFileType" class="com.example.fsexplorer.fs.FileType">
+        <constructor-arg name="className" value="music"/>
+        <constructor-arg name="extensions">
+            <list>
+                <value>mp3</value>
+                <value>m3u</value>
+                <value>wav</value>
+                <value>flac</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="handlerUrl" value="/default" />
+    </bean>
+
+    <bean id="imageFileType" class="com.example.fsexplorer.fs.FileType">
+        <constructor-arg name="className" value="image"/>
+        <constructor-arg name="extensions">
+            <list>
+                <value>jpeg</value>
+                <value>jpg</value>
+                <value>bmp</value>
+                <value>psd</value>
+                <value>png</value>
+                <value>gif</value>
+                <value>ico</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="handlerUrl" value="/default" />
+    </bean>
+
     <bean id="fileTypeFactory" class="com.example.fsexplorer.fs.FileTypeFactory">
         <constructor-arg name="fileTypes">
             <list>
                 <ref bean="docFileType" />
                 <ref bean="archFileType" />
+                <ref bean="htmlFileType" />
+                <ref bean="xmlFileType" />
+                <ref bean="musicFileType" />
+                <ref bean="imageFileType" />
             </list>
         </constructor-arg>
     </bean>

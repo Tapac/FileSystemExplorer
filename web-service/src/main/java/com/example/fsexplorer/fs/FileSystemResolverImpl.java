@@ -25,13 +25,17 @@ public class FileSystemResolverImpl implements FileSystemResolver {
     private final FileTypeFactory fileTypeFactory;
 
     public FileSystemResolverImpl(String rootPath, FileTypeFactory fileTypeFactory) {
-        this.rootPath = Paths.get(rootPath);
+        if (rootPath == null || rootPath.isEmpty()) {
+            this.rootPath = FileSystems.getDefault().getRootDirectories().iterator().next();
+        } else {
+            this.rootPath = Paths.get(rootPath);
+        }
         this.fileTypeFactory = fileTypeFactory;
     }
 
     @Override
     public NodeList getAllChildren(final String p) {
-        Path path = rootPath.resolve(p);
+        Path path = Paths.get(rootPath.toString(), p);
 
         if (!Files.exists(path)) {
             return new NodeList(null);

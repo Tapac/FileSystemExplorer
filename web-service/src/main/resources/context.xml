@@ -16,7 +16,7 @@
     <import resource="filetypes-context.xml"/>
 
     <bean id="fsResolver" class="com.example.fsexplorer.fs.FileSystemResolverImpl">
-        <constructor-arg name="rootPath" value="d:\" />
+        <constructor-arg name="rootPath" value="#{ systemProperties['root.path'] }" />
         <constructor-arg name="fileTypeFactory" ref="fileTypeFactory" />
     </bean>
 
