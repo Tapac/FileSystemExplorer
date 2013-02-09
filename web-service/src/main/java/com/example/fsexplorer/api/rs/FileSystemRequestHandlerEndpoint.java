@@ -30,19 +30,20 @@ public class FileSystemRequestHandlerEndpoint implements FileSystemRequestHandle
     @Produces("application/json")
     @Override
     public NodeList getAllChildrenPaths(@PathParam("path") final String parentRoot) {
-        return fileSystemResolver.getAllChildren(parentRoot);
+        if (!Base64.isBase64(parentRoot)) {
+            return NodeList.EMPTY_NODE_LIST;
+        }
+        String realPath = new String(Base64.decodeBase64(parentRoot.getBytes()));
+        return fileSystemResolver.getAllChildren(realPath);
     }
 
     @GET
     @Path("/rendered/children/{path:.*}")
     @Override
     public Response getAllChildrenRendered(@PathParam("path") final String parentRoot) {
-        if (!Base64.isBase64(parentRoot)) {
-            return Response.serverError().build();
-        }
 
-        String realPath = new String(Base64.decodeBase64(parentRoot.getBytes()));
-        NodeList nodeList = fileSystemResolver.getAllChildren(realPath);
+        final NodeList nodeList = getAllChildrenPaths(parentRoot);
+
         try {
             String html = TemplateFactory.prepareNodeListTemplate(nodeList);
             return Response.ok().type(MediaType.TEXT_HTML_TYPE).entity(html).build();

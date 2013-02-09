@@ -38,7 +38,7 @@ public class FileSystemResolverImpl implements FileSystemResolver {
         Path path = Paths.get(rootPath.toString(), p);
 
         if (!Files.exists(path)) {
-            return new NodeList(null);
+            return NodeList.EMPTY_NODE_LIST;
         }
 
         List<Node> nodes = new ArrayList<>();
@@ -55,7 +55,7 @@ public class FileSystemResolverImpl implements FileSystemResolver {
             log.error("Something wrong with directory iteration", ex);
         } catch (IOException e) {
             log.error("Something happened on retrieving list of children of " + p, e);
-            return new NodeList(null);
+            return NodeList.EMPTY_NODE_LIST;
         }
 
         return new NodeList(nodes);

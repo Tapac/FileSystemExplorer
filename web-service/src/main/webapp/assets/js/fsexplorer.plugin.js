@@ -1,28 +1,52 @@
 (function ($) {
     $.widget('ui.fsexplorer', {
         options: {
-            serviceUrl: "http://" + window.location.host +  "/service/",
-            render: "server"
+            serviceUrl: "http://" + window.location.host + "/service/",
+            render: "server",
+            template: ""
         },
         loadNodes: function (node) {
-            var renderService = "rendered";
+            var o = this.options;
+            var renderService = "rendered/";
+            var toAppend = (node.attr('fullpath') == "") ? node : node.after('<li class="subnodes"></li>').next();
 
-            if (this.options.render == "server") {
-                var toAppend = (node.attr('fullpath') == "") ? node : node.after('<li class="subnodes"></li>').next();
-                var url = this.options.serviceUrl + renderService + "/children/" + $(node).attr('fullpath');
+            if (o.render == "server") {
+                var url = this.options.serviceUrl + renderService + "children/" + $(node).attr('fullpath');
                 toAppend.load(encodeURI(url));
+            } else {
+                $.getJSON(this.options.serviceUrl + "children/" + $(node).attr('fullpath'),
+                    function (json) {
+                       toAppend.html(o.template(json));
+                    });
+
             }
         },
         _create: function () {
             var self = this,
-                el = self.element;
+                el = self.element,
+                o = self.options;
             $(el).addClass("fsexplorer");
-            $(el).on("click", "li.folder, li.arc", function() {self._handleClick($(this))});
-            this.loadNodes($(el).attr('fullpath', ''));
+            $(el).on("click", "li.folder, li.arc", function () {
+                self._handleClick($(this))
+            });
+            if (typeof Mustache == 'undefined') {
+                o.render = "server";
+            }
+
+            if (o.render == "client") {
+                $.get(o.serviceUrl + "template")
+                    .done(function (data) {
+                        o.template = Mustache.compile(data);
+                        self.loadNodes($(el).attr('fullpath', ''));
+                    });
+            } else {
+                this.loadNodes($(el).attr('fullpath', ''));
+            }
+
         },
 
-        _handleClick: function(node) {
-            if($(node).next().hasClass("subnodes")) {
+        _handleClick: function (node) {
+            if ($(node).next().hasClass("subnodes")) {
                 $(node).removeClass("opened");
                 $(node).next().hide().remove();
             } else {
