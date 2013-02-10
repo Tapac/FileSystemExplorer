@@ -1,7 +1,6 @@
 package com.example.fsexplorer.api;
 
 import com.example.fsexplorer.fs.FileType;
-import org.springframework.util.FileSystemUtils;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -31,10 +30,19 @@ public class Node {
 
 
     public static Node createNode(String fileName, String path, long size, FileType type) {
-        final String shortName = (fileName.length() > 25)?fileName.substring(0,25) + "..." :fileName;
 
         return new Node(fileName, path, humanReadableByteCount(size, true), type.getClassName(),
-                type.getHandlerUrl(), shortName);
+                type.getHandlerUrl(), shortenString(fileName, 25));
+    }
+
+    public static Node createArchivedNode(String fileName, String path,
+                                          String innerPath, long size, FileType type) {
+        return new Node(fileName, path, humanReadableByteCount(size, true), type.getClassName(),
+                innerPath, shortenString(fileName, 25));
+    }
+
+    private static String shortenString(final String string, int size) {
+        return (string.length() > size) ? string.substring(0, size) + "..." : string;
     }
 
     /**
@@ -45,7 +53,7 @@ public class Node {
         if (bytes == 0) return "";
         if (bytes < unit) return bytes + " B";
         int exp = (int) (Math.log(bytes) / Math.log(unit));
-        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
         return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 }

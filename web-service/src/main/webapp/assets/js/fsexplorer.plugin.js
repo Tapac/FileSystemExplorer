@@ -7,20 +7,33 @@
         },
         loadNodes: function (node) {
             var o = this.options;
-            var renderService = "rendered/";
+            var dataService = "children/" + window.btoa(window.atob($(node).attr('fullpath')) + $(node).attr('data-handler'));
             var toAppend = (node.attr('fullpath') == "") ? node : node.after('<li class="subnodes"></li>').next();
 
+            var url = "";
             if (o.render == "server") {
-                var url = this.options.serviceUrl + renderService + "children/" + $(node).attr('fullpath');
-                toAppend.load(encodeURI(url));
+                url = encodeURI(this.options.serviceUrl + "rendered/" + dataService);
+                toAppend.load(url, handleError);
             } else {
-                $.getJSON(this.options.serviceUrl + "children/" + $(node).attr('fullpath'),
-                    function (json) {
-                       toAppend.html(o.template(json));
+                url = encodeURI(this.options.serviceUrl + dataService);
+                $.getJSON(url,function (json) {
+                    toAppend.html(o.template(json));
+                }).fail(function (jqXHR, status, exception) {
+                        handleError("", status, jqXHR);
                     });
-
             }
+
+            function handleError(response, status, xhr) {
+                if (status == "error") {
+                    toAppend.remove();
+                    console.warn(xhr.responseText);
+                    alert(xhr.responseText);
+                }
+            }
+
         },
+
+
         _create: function () {
             var self = this,
                 el = self.element,
@@ -37,10 +50,10 @@
                 $.get(o.serviceUrl + "template")
                     .done(function (data) {
                         o.template = Mustache.compile(data);
-                        self.loadNodes($(el).attr('fullpath', ''));
+                        self.loadNodes($(el).attr('fullpath', '').attr('data-handler', ''));
                     });
             } else {
-                this.loadNodes($(el).attr('fullpath', ''));
+                this.loadNodes($(el).attr('fullpath', '').attr('data-handler', ''));
             }
 
         },

@@ -11,17 +11,18 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.nio.file.ProviderNotFoundException;
 
 /**
  * @author Andrey Tarashevsky
  *         Date: 02.02.13
  */
 @Service("fsExplorerWS")
-public class FileSystemRequestHandlerEndpoint implements FileSystemRequestHandler {
+public class RequestHandlerEndpoint implements FileSystemRequestHandler {
 
     private final FileSystemResolver fileSystemResolver;
 
-    public FileSystemRequestHandlerEndpoint(FileSystemResolver fileSystemResolver) {
+    public RequestHandlerEndpoint(FileSystemResolver fileSystemResolver) {
         this.fileSystemResolver = fileSystemResolver;
     }
 
@@ -34,7 +35,11 @@ public class FileSystemRequestHandlerEndpoint implements FileSystemRequestHandle
             return NodeList.EMPTY_NODE_LIST;
         }
         String realPath = new String(Base64.decodeBase64(parentRoot.getBytes()));
-        return fileSystemResolver.getAllChildren(realPath);
+        try {
+            return fileSystemResolver.getAllChildren(realPath);
+        } catch (ProviderNotFoundException e) {
+            throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
+        }
     }
 
     @GET
@@ -48,7 +53,7 @@ public class FileSystemRequestHandlerEndpoint implements FileSystemRequestHandle
             String html = TemplateFactory.prepareNodeListTemplate(nodeList);
             return Response.ok().type(MediaType.TEXT_HTML_TYPE).entity(html).build();
         } catch (IOException e) {
-            return Response.serverError().build();
+            return Response.serverError().entity("Exception on server-side rendering").build();
         }
     }
 

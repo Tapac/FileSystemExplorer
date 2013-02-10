@@ -26,8 +26,8 @@ public final class FileType {
 
     @SuppressWarnings("UnusedDeclaration")
     @XmlElement
-    public boolean isExpandable() {
-        return !handlerUrl.isEmpty();
+    public boolean isHandled() {
+        return !handlerUrl.equals("/");
     }
 
     @XmlElement

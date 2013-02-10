@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class FileTypeFactory {
 
-    public static final FileType FOLDER = new FileType("folder", Collections.<String>emptyList(), "/default");
+    public static final FileType FOLDER = new FileType("folder", Collections.<String>emptyList(), "");
     public static final FileType UNKNOWN = new FileType("unknown", Collections.<String>emptyList(), "");
 
     private List<FileType> fileTypes;
@@ -46,7 +46,7 @@ public class FileTypeFactory {
             return FOLDER;
         }
 
-        String ext = com.google.common.io.Files.getFileExtension(path.toFile().getName());
+        String ext = getExtension(path);
         for (FileType type : fileTypes) {
             if (type.getExtensions().indexOf(ext) > -1) {
                 return type;
@@ -54,6 +54,10 @@ public class FileTypeFactory {
         }
 
         return UNKNOWN;
+    }
+
+    public static String getExtension(Path path) {
+        return com.google.common.io.Files.getFileExtension(path.getFileName().toString());
     }
 
 
